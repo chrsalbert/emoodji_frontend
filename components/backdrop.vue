@@ -19,7 +19,6 @@ export default {
   z-index: 1;
   position: fixed;
   transition: all 0.2s;
-  pointer-events: none;
 }
 .c-backdrop--show {
   top: 0;

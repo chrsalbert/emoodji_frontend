@@ -29,8 +29,10 @@ export default {
     active(newVal, oldVal) {
       if(newVal === true) {
         this.$refs.canvas.addEventListener('mousedown', this.start)
+        this.$refs.canvas.addEventListener('touchstart', this.start)
       } else {
         this.$refs.canvas.removeEventListener('mousedown', this.start)
+        this.$refs.canvas.removeEventListener('touchstart', this.start)
       }
     }
   },
@@ -74,6 +76,7 @@ export default {
       this.draw(event)
     },
     draw(event) {
+      event.preventDefault()
       const coords = this.getCoords(event)
       const index = this.polylines.length - 1
       this.polylines[index].points +=
@@ -82,11 +85,13 @@ export default {
           : `,${coords.x} ${coords.y}`
     },
     getCoords(event) {
+      const clientX = event.clientX || event.touches[0].clientX
+      const clientY = event.clientY || event.touches[0].clientY
       const rect = this.$refs.canvas.getBoundingClientRect()
       const responsiveFactor = 600 / rect.width
       const coords = {
-        x: ((event.clientX - rect.x) * responsiveFactor).toFixed(2),
-        y: ((event.clientY - rect.y) * responsiveFactor).toFixed(2)
+        x: ((clientX - rect.x) * responsiveFactor).toFixed(2),
+        y: ((clientY - rect.y) * responsiveFactor).toFixed(2)
       }
       return coords
     },

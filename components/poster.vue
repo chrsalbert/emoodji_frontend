@@ -15,7 +15,7 @@
   margin: 0 auto;
   max-width: 100rem;
   grid-template-columns: repeat(7, 1fr);
-  grid-gap: 1rem;
+  grid-gap: min(2vh, 2vw);
 }
 .c-poster > li {
   position: relative;
