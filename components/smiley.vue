@@ -1,18 +1,18 @@
 <template>
-  <div class="index">
-    <c-poster />
+  <div>
+    S
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {}
+  data () {
+    return {
+
+    }
   }
 }
 </script>
 <style>
-.index {
-  padding: 1rem
-}
+
 </style>
