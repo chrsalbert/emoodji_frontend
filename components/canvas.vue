@@ -1,10 +1,20 @@
 <template>
-  <svg id="canvas" ref="canvas" viewBox="0 0 600 600" class="c-canvas">
+  <svg
+    id="canvas"
+    ref="canvas"
+    viewBox="0 0 600 600"
+    class="c-canvas"
+    :class="{ 'c-canvas--active': active }"
+  >
     <polyline
       v-for="polyline in polylines"
       :key="polyline.id"
       :points="polyline.points"
     />
+    <circle
+      v-if="active"
+      :style="{ '--cx': cursor.cx, '--cy': cursor.cy }"
+    ></circle>
   </svg>
 </template>
 <script>
@@ -21,18 +31,24 @@ export default {
   },
   data() {
     return {
-      polylines: []
+      polylines: [],
+      cursor: {
+        cx: 0,
+        cy: 0
+      }
     }
   },
   computed: {},
   watch: {
     active(newVal, oldVal) {
-      if(newVal === true) {
+      if (newVal === true) {
         this.$refs.canvas.addEventListener('mousedown', this.start)
         this.$refs.canvas.addEventListener('touchstart', this.start)
+        this.$refs.canvas.addEventListener('mousemove', this.moveCursor)
       } else {
         this.$refs.canvas.removeEventListener('mousedown', this.start)
         this.$refs.canvas.removeEventListener('touchstart', this.start)
+        this.$refs.canvas.removeEventListener('mousemove', this.moveCursor)
       }
     }
   },
@@ -74,6 +90,11 @@ export default {
       this.polylines.push({ id: this.getRandomId(), points: '' })
       this.draw(event)
       this.draw(event)
+    },
+    moveCursor(event) {
+      const coords = this.getCoords(event)
+      this.cursor.cx = coords.x
+      this.cursor.cy = coords.y
     },
     draw(event) {
       event.preventDefault()
@@ -122,6 +143,15 @@ export default {
 .c-canvas {
   background: #ffde34;
   border-radius: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.c-canvas:hover:not(.c-canvas--active) {
+  transform: scale(1.1) rotate(3deg);
+}
+.c-canvas--active {
+  cursor: none;
+  box-shadow: rgba(255, 255, 255, 0.15) 0px 48px 100px 0px;
 }
 .c-canvas polyline {
   fill: none;
@@ -130,5 +160,14 @@ export default {
   stroke-linejoin: round;
   stroke-linecap: round;
   pointer-events: none;
+}
+.c-canvas circle {
+  fill: transparent;
+  stroke: white;
+  mix-blend-mode: difference;
+  stroke-width: 2;
+  r: var(--r, 30px);
+  cx: var(--cx, 100px);
+  cy: var(--cy, 100px);
 }
 </style>

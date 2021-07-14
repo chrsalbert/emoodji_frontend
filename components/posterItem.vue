@@ -5,7 +5,10 @@
       ref="item"
       class="c-poster__item"
       :class="{ 'c-poster__item--open': isOpen }"
-      :style="{ '--open-x': itemOpenOffsetXInPx, '--open-y': itemOpenOffsetYInPx }"
+      :style="{
+        '--open-x': itemOpenOffsetXInPx,
+        '--open-y': itemOpenOffsetYInPx
+      }"
       @click="open()"
       @keypress.up="closeByKey()"
     >
@@ -81,15 +84,18 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #f0f0f0;
   border-radius: 100%;
-  transition: all .3s ease-out, transform .2s ease-out .3s;
+  transition: all 0.3s ease-out, transform 0.2s ease-out 0.3s;
 }
 .c-poster__item--open {
   z-index: 2;
-  transform: translate3d(calc(var(--open-x, 0%) - 50%), calc(var(--open-y, 0%) - 50%), 0);
+  transform: translate3d(
+    calc(var(--open-x, 0%) - 50%),
+    calc(var(--open-y, 0%) - 50%),
+    0
+  );
   height: min(80vw, 80vh);
   width: min(80vw, 80vh);
-  transition: all .3s ease-in .2s, transform .2s ease-in;
+  transition: all 0.3s ease-in 0.2s, transform 0.2s ease-in;
 }
 </style>
