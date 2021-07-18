@@ -5,19 +5,25 @@
     viewBox="0 0 600 600"
     class="c-canvas"
     :class="{ 'c-canvas--active': active }"
+    :style="{ '--stroke-width': strokeWidth }"
   >
     <polyline
       v-for="polyline in polylines"
       :key="polyline.id"
       :points="polyline.points"
+      :style="{
+        '--stroke-width': polyline.strokeWidth,
+        '--stroke-color': polyline.strokeColor
+      }"
     />
     <circle
       v-if="active"
-      :style="{ '--cx': cursor.cx, '--cy': cursor.cy }"
+      :style="{ '--cx': cursor.cx, '--cy': cursor.cy, '--r': cursorRadius }"
     ></circle>
   </svg>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: {
     day: {
@@ -38,7 +44,15 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      strokeWidth: 'poster/getStrokeWidth',
+      strokeColor: 'poster/getStrokeColor'
+    }),
+    cursorRadius() {
+      return `${this.strokeWidth / 2}px`
+    }
+  },
   watch: {
     active(newVal, oldVal) {
       if (newVal === true) {
@@ -52,10 +66,21 @@ export default {
       }
     }
   },
+  created() {
+    this.$nuxt.$on('poster-undo', () => {
+      if (!this.active) {
+        return
+      }
+      this.undo()
+    })
+  },
   mounted() {
     this.loadPolylinesFromLocalStorage()
   },
   methods: {
+    undo() {
+      this.polylines = this.polylines.splice(0, this.polylines.length - 1)
+    },
     getRandomId() {
       let result = ''
       const characters =
@@ -87,7 +112,12 @@ export default {
       this.saveToLocalStore()
     },
     addPolyline(event) {
-      this.polylines.push({ id: this.getRandomId(), points: '' })
+      this.polylines.push({
+        id: this.getRandomId(),
+        points: '',
+        strokeWidth: this.strokeWidth,
+        strokeColor: this.strokeColor
+      })
       this.draw(event)
       this.draw(event)
     },
@@ -141,7 +171,7 @@ export default {
 </script>
 <style>
 .c-canvas {
-  background: #ffde34;
+  background: var(--color-primary);
   border-radius: 100%;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -155,8 +185,8 @@ export default {
 }
 .c-canvas polyline {
   fill: none;
-  stroke: black;
-  stroke-width: 60;
+  stroke: var(--stroke-color, #000);
+  stroke-width: var(--stroke-width, 60);
   stroke-linejoin: round;
   stroke-linecap: round;
   pointer-events: none;

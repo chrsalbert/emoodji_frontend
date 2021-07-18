@@ -46,9 +46,15 @@ export default {
       return `${this.item.open.offsetY}px`
     }
   },
+  created() {
+    this.$nuxt.$on('poster-close', () => {
+      this.close()
+    })
+  },
   methods: {
     ...mapMutations({
-      setBackdropOpen: 'global/SET_BACKDROP_OPEN'
+      setBackdropOpen: 'global/SET_BACKDROP_OPEN',
+      setPosterItemOpen: 'poster/SET_POSTER_ITEM_OPEN'
     }),
     open() {
       if (this.isOpen) {
@@ -56,13 +62,15 @@ export default {
       }
       this.isOpen = true
       this.setBackdropOpen(true)
+      this.setPosterItemOpen(true)
       this.setDimensions()
-      document.addEventListener('keyup', this.close)
+      document.addEventListener('keyup', this.closeByKey)
     },
     close() {
       this.isOpen = false
       this.setBackdropOpen(false)
-      document.removeEventListener('keyup', this.close)
+      this.setPosterItemOpen(false)
+      document.removeEventListener('keyup', this.closeByKey)
     },
     setDimensions() {
       const defaultOffset = this.$refs.item.getBoundingClientRect()
@@ -85,7 +93,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 100%;
-  transition: all 0.3s ease-out, transform 0.2s ease-out 0.3s;
+  transition: all 0.3s;
 }
 .c-poster__item--open {
   z-index: 2;
@@ -96,6 +104,6 @@ export default {
   );
   height: min(80vw, 80vh);
   width: min(80vw, 80vh);
-  transition: all 0.3s ease-in 0.2s, transform 0.2s ease-in;
+  transition: all 0.3s;
 }
 </style>

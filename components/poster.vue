@@ -6,7 +6,7 @@
       :ref="`item${i}`"
       :day="i"
     />
-    <li><c-backdrop /></li>
+    <li aria-hidden="true"><c-backdrop /></li>
   </ul>
 </template>
 <style>

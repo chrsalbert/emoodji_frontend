@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <c-toolbar />
     <c-poster />
   </div>
 </template>
