@@ -18,7 +18,7 @@
     />
     <circle
       v-if="active"
-      :style="{ '--cx': cursor.cx, '--cy': cursor.cy, '--r': cursorRadius }"
+      :style="{ 'cx': cursor.cx, 'cy': cursor.cy, 'r': cursorRadius }"
     ></circle>
   </svg>
 </template>
@@ -196,8 +196,5 @@ export default {
   stroke: white;
   mix-blend-mode: difference;
   stroke-width: 2;
-  r: var(--r, 30px);
-  cx: var(--cx, 100px);
-  cy: var(--cy, 100px);
 }
 </style>
