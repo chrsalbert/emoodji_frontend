@@ -57,7 +57,7 @@ export default {
     active(newVal, oldVal) {
       if (newVal === true) {
         this.$refs.canvas.addEventListener('mousedown', this.start)
-        this.$refs.canvas.addEventListener('touchstart', this.start)
+        this.$refs.canvas.addEventListener('touchstart', this.start, { passive: false })
         this.$refs.canvas.addEventListener('mousemove', this.moveCursor)
       } else {
         this.$refs.canvas.removeEventListener('mousedown', this.start)
@@ -96,7 +96,7 @@ export default {
     start(event) {
       this.addPolyline(event)
       this.$refs.canvas.addEventListener('mousemove', this.draw)
-      this.$refs.canvas.addEventListener('touchmove', this.draw)
+      this.$refs.canvas.addEventListener('touchmove', this.draw, { passive: false })
       this.$refs.canvas.addEventListener('mouseleave', this.stop)
       this.$refs.canvas.addEventListener('mouseup', this.stop)
       this.$refs.canvas.addEventListener('touchend', this.stop)
