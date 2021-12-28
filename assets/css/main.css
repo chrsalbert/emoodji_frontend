@@ -1,14 +1,41 @@
-@import '~assets/css/variables.css';
+@import "./variables.css";
+@import "./normalize.css";
+@import "./utilities.css";
+@import "./transitions.css";
 
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-:host,
 body {
-  font: 1rem/1 Arial, Sans-Serif;
+  font: var(--font-md)/var(--line-height) var(--font-family);
+}
+
+ul,
+ol {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none
+}
+
+a:visited {
+  color: currentColor
+}
+
+html .m-control--floatLabel.m-control--hasInput .m-control__label,
+html .m-control--floatLabel.m-control--hasFocus .m-control__label {
+  background: var(--color-black);
+  color: var(--color-white);
+  transform: rotate(-2deg);
+}
+
+html .m-title > h1 {
+  font-family: var(--font-alt-family);
+  font-weight: var(--font-alt-bold)
 }

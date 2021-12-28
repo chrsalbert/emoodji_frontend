@@ -23,11 +23,11 @@
   </svg>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   props: {
-    day: {
-      type: Number,
+    smiley: {
+      type: Object,
       required: true
     },
     active: {
@@ -37,7 +37,6 @@ export default {
   },
   data() {
     return {
-      polylines: [],
       cursor: {
         cx: 0,
         cy: 0
@@ -51,8 +50,12 @@ export default {
     }),
     cursorRadius() {
       return `${this.strokeWidth / 2}px`
+    },
+    polylines() {
+      return this.smiley.polylines
     }
   },
+  
   watch: {
     active(newVal, oldVal) {
       if (newVal === true) {
@@ -73,13 +76,25 @@ export default {
       }
       this.undo()
     })
-  },
-  mounted() {
-    this.loadPolylinesFromLocalStorage()
+    this.$nuxt.$on('poster-clean', () => {
+      if (!this.active) {
+        return
+      }
+      this.undo()
+    })
   },
   methods: {
+    ...mapActions({
+      addPolyline: 'poster/addPolyline',
+      addPoints: 'poster/addPoints',
+      deleteLastPolyline: 'poster/deleteLastPolyline',
+      deleteLastPoldeleteAllPolylinesyline: 'poster/deleteAllPolylines'
+    }),
     undo() {
-      this.polylines = this.polylines.splice(0, this.polylines.length - 1)
+      this.deleteLastPolyline(this.smiley.date)
+    },
+    clean() {
+      this.deleteAllPolylines(this.smiley.date)
     },
     getRandomId() {
       let result = ''
@@ -94,7 +109,7 @@ export default {
       return result
     },
     start(event) {
-      this.addPolyline(event)
+      this.initPolyline(event)
       this.$refs.canvas.addEventListener('mousemove', this.draw)
       this.$refs.canvas.addEventListener('touchmove', this.draw, { passive: false })
       this.$refs.canvas.addEventListener('mouseleave', this.stop)
@@ -109,17 +124,6 @@ export default {
       this.$refs.canvas.removeEventListener('mouseup', this.stop)
       this.$refs.canvas.removeEventListener('touchend', this.stop)
       this.$refs.canvas.removeEventListener('touchcancel', this.stop)
-      this.saveToLocalStore()
-    },
-    addPolyline(event) {
-      this.polylines.push({
-        id: this.getRandomId(),
-        points: '',
-        strokeWidth: this.strokeWidth,
-        strokeColor: this.strokeColor
-      })
-      this.draw(event)
-      this.draw(event)
     },
     moveCursor(event) {
       const coords = this.getCoords(event)
@@ -129,11 +133,10 @@ export default {
     draw(event) {
       event.preventDefault()
       const coords = this.getCoords(event)
-      const index = this.polylines.length - 1
-      this.polylines[index].points +=
-        this.polylines[index].points === ''
-          ? `${coords.x} ${coords.y}`
-          : `,${coords.x} ${coords.y}`
+      this.addPoints({ 
+        date: this.smiley.date, 
+        coords
+      })
     },
     getCoords(event) {
       const clientX = event.clientX || event.touches[0].clientX
@@ -146,42 +149,31 @@ export default {
       }
       return coords
     },
-    getDateFromDayOfYear(dayOfYear) {
-      const currentYear = new Date().getFullYear()
-      const date = new Date(Date.UTC(currentYear, 0, dayOfYear))
-        .toISOString()
-        .slice(0, 10)
-      return date
+    async initPolyline(event) {
+      await this.addPolyline({ 
+        date: this.smiley.date, 
+        polyline: {
+          id: this.getRandomId(),
+          points: '',
+          strokeWidth: this.strokeWidth,
+          strokeColor: this.strokeColor
+        },
+      })
+      this.draw(event) // draws point (start)
+      this.draw(event) // draws point (end)
     },
-    saveToLocalStore() {
-      window.localStorage.setItem(
-        this.getDateFromDayOfYear(this.day),
-        JSON.stringify(this.polylines)
-      )
-    },
-    loadPolylinesFromLocalStorage() {
-      const polylines = JSON.parse(
-        window.localStorage.getItem(this.getDateFromDayOfYear(this.day))
-      )
-      if (!polylines) return
-      this.polylines.push(...polylines)
-    }
   }
 }
 </script>
 <style>
 .c-canvas {
-  background: var(--color-primary);
+  background: var(--color-primary-500);
   border-radius: 100%;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-.c-canvas:hover:not(.c-canvas--active) {
-  transform: scale(1.1) rotate(3deg);
-}
 .c-canvas--active {
   cursor: none;
-  box-shadow: rgba(255, 255, 255, 0.15) 0px 48px 100px 0px;
 }
 .c-canvas polyline {
   fill: none;
