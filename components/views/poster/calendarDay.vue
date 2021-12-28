@@ -114,6 +114,12 @@ export default {
           polylines: this.smiley.polylines
         }
       )
+      setTimeout(() => {
+        this.$toast().show({
+          text: 'Smiley saved',
+          variant: 'positive'
+        })
+      }, 300)
     }
   }
 }
