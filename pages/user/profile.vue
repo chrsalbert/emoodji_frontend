@@ -45,9 +45,9 @@ export default {
             forename: this.form.data.forename
           }
         )
-        this.$auth.setUser(data)
+        this.$nuxt.$updatedUser(data)
         this.$toast().show({
-          text: 'Saved.',
+          text: 'Profile saved',
           variant: 'positive'
         })
       } catch (error) {
