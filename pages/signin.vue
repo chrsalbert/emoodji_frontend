@@ -81,7 +81,7 @@ export default {
     async onSubmit() {
       this.form.processing = true
       try {
-        await this.$auth.loginWith('local', {
+        await this.$auth.login({
           data: this.form.data
         })
         this.form.processing = false

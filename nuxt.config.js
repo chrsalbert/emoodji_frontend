@@ -92,26 +92,30 @@ export default {
   auth: {
     strategies: {
       local: {
+        scheme: 'refresh',
         token: {
-          maxAge: 86400
+          property: 'access_token',
+          maxAge: 60 * 15,
+          global: true
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          data: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30
+        },
+        user: {
+          property: 'user'
         },
         endpoints: {
-          login: {
-            url: '/api/users/login',
-            method: 'post',
-            property: 'token'
-          },
-          logout: false,
-          user: {
-            url: '/api/auth/user',
-            method: 'get',
-            property: 'user'
-          }
+          login: { url: '/api/auth/login', method: 'post' },
+          refresh: { url: '/api/auth/refresh', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get' },
+          logout: false
         }
       }
     },
     redirect: {
-      login: '/signin' // User will be redirected to this path if login is required
+      login: '/signin'
     }
   },
 
