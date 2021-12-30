@@ -1,17 +1,32 @@
 <template>
-  <l-container width="2xs">
+  <l-container width="xs">
     <m-title variant="page">
       <a-headline>Profile</a-headline>
     </m-title>
-    <m-form gap="var(--space-6)" @submit.native.prevent="onSubmit()">
-      <m-control label="Forename" label-for="forename">
-        <a-input id="forename" v-model="form.data.forename" label="Forename" />
-      </m-control>
-      <a-button submit size="sm">Save</a-button>
-    </m-form>
-    <a-button to="/user/delete" size="sm" ghost variant="light" link
-      >Delete account</a-button
-    >
+    <ul class="v-profile__data">
+      <li>
+        <v-user-profile-form
+          id="forename"
+          label="Forename"
+          success-message="Forename saved"
+          :value="form.data.forename"
+        />
+      </li>
+      <li>
+        <v-user-profile-form
+          id="email"
+          label="Email address"
+          success-message="You got an email with an activation link"
+          :value="form.data.email"
+          :input-options="{ type: 'email' }"
+        />
+      </li>
+    </ul>
+    <div class="v-profile__delete">
+      <a-button to="/user/delete" size="sm" ghost variant="light" link
+        >Delete account</a-button
+      >
+    </div>
   </l-container>
 </template>
 <script>
@@ -21,7 +36,8 @@ export default {
     return {
       form: {
         data: {
-          forename: ''
+          forename: '',
+          email: ''
         }
       }
     }
@@ -31,37 +47,37 @@ export default {
       return this.$store.state.auth.user
     }
   },
+  mounted() {
+    if (this.$route.params.toast) {
+      this.$toast().show({
+        text: this.$route.params.toast.text,
+        variant: this.$route.params.toast.variant
+      })
+    }
+  },
   beforeMount() {
     this.initFormData()
   },
   methods: {
     initFormData() {
-      this.form.data = {
-        forename: this.user.forename
-      }
-    },
-    async onSubmit() {
-      try {
-        const { data } = await this.$axios.patch(
-          `${process.env.backendUrl}/api/user/${this.user.id}`,
-          {
-            forename: this.form.data.forename
-          }
-        )
-        this.$nuxt.$updatedUser(data)
-        this.$toast().show({
-          text: 'Profile saved',
-          variant: 'positive'
-        })
-      } catch (error) {
-        if (error.response) {
-          this.$toast().show({
-            text: 'An error has occurred. Please try again later.',
-            variant: 'negative'
-          })
-        }
-      }
+      this.form.data = this.user
     }
   }
 }
 </script>
+<style>
+.v-profile__data {
+  margin: calc(var(--space-4) * -1) 0;
+}
+.v-profile__data > li {
+  padding: var(--space-4) 0;
+  border-bottom: 1px var(--color-gray-100) solid;
+}
+
+.v-profile__delete {
+  margin: var(--space-12) 0;
+  text-align: right;
+}
+@media screen and (min-width: 480px) {
+}
+</style>

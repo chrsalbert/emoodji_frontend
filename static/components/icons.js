@@ -10,5 +10,7 @@ export default [
   'save',
   'check',
   'delete',
-  'stroke'
+  'stroke',
+  'pen',
+  'dots-vertical'
 ]

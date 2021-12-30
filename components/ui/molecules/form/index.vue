@@ -1,7 +1,7 @@
 <template>
   <form ref="form" class="m-form" :style="{ '--m-form-gap': gap }">
     <slot />
-    <div class="m-form__actions">
+    <div v-if="$slots.actions" class="m-form__actions">
       <slot name="actions" />
     </div>
   </form>
