@@ -47,10 +47,13 @@ export default {
 }
 
 /* variant: page */
-.m-title--page > h1 {
+.m-title--page {
   margin: 0 0 var(--space-16);
 }
+.m-title--page h1 {
+  margin: 0;
+}
 .m-title--page p:first-of-type {
-  margin: calc(var(--space-12) * -1) 0 var(--space-12);
+  margin: var(--space-4) 0 0;
 }
 </style>

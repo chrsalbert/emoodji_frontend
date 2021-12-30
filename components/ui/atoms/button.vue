@@ -51,6 +51,10 @@ export default {
       type: Boolean,
       default: false
     },
+    link: {
+      type: Boolean,
+      default: false
+    },
     chameleon: {
       type: Boolean,
       default: false
@@ -84,6 +88,7 @@ export default {
         'a-button--chameleon': this.chameleon,
         'a-button--show-loader': this.showLoader,
         'a-button--icon': this.iconName,
+        'a-button--link': this.link,
         'a-button--full': this.full
       }
     },
@@ -243,6 +248,13 @@ export default {
  */
 .a-button--full {
   width: 100%;
+}
+
+/*
+ *  Link
+ */
+.a-button--link {
+  padding: 0;
 }
 
 /*

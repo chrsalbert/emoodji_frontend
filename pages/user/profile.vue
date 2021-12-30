@@ -9,6 +9,9 @@
       </m-control>
       <a-button submit size="sm">Save</a-button>
     </m-form>
+    <a-button to="/user/delete" size="sm" ghost variant="light" link
+      >Delete account</a-button
+    >
   </l-container>
 </template>
 <script>
