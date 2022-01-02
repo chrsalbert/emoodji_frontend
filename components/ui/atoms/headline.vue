@@ -59,6 +59,7 @@ export default {
 }
 .a-h1 {
   font-size: var(--font-3xl);
+  line-height: var(--line-height-xs);
 }
 .a-h2 {
   font-size: var(--font-2xl);
