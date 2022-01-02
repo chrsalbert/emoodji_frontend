@@ -1,5 +1,5 @@
 <template>
-  <div class="o-loading" :class="{ 'o-loading--finished': !loading }">
+  <div class="o-loading" :class="classes">
     <svg
       width="80"
       height="80"
@@ -27,6 +27,18 @@ export default {
     loading: {
       type: Boolean,
       default: true
+    },
+    fullsize: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    classes() {
+      return {
+        'o-loading--finished': !this.loading,
+        'o-loading--fullsize': this.fullsize
+      }
     }
   }
 }
@@ -44,5 +56,12 @@ export default {
 }
 .o-loading--finished svg {
   animation: blowUp 1s ease-out normal forwards;
+}
+.o-loading--fullsize {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 </style>

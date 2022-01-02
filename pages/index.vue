@@ -1,5 +1,15 @@
 <template>
   <div>
+    <nuxt-link
+      :to="{
+        name: 'login-set-password',
+        query: {
+          token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDEwNjA1MjAsImV4cCI6MTY0MTA2MTQyMH0.OEQCtwbXN8YBNWQZ2AP4gEBRy9Z93_ldUPpqL0YzFoo'
+        }
+      }"
+      >lol</nuxt-link
+    >
     <!-- <div class="header">
       <div>links</div>
       <div>recjts</div>
