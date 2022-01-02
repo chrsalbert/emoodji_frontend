@@ -32,6 +32,9 @@
 .l-gate__content {
   padding: calc(var(--space-8) + 2vw);
 }
+.l-gate__content a {
+  text-decoration: underline;
+}
 @media screen and (min-width: 768px) {
   .l-gate {
     display: flex;

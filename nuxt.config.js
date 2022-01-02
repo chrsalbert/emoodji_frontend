@@ -96,7 +96,7 @@ export default {
         token: {
           property: 'access_token',
           maxAge: 60 * 15,
-          global: true
+          global: false
         },
         refreshToken: {
           property: 'refresh_token',
@@ -115,7 +115,7 @@ export default {
       }
     },
     redirect: {
-      login: '/signin'
+      login: '/login'
     }
   },
 

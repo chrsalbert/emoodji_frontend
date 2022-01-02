@@ -30,7 +30,7 @@
         </template>
         <template v-else>
           <a-button to="/signup" ghost>Sign up</a-button>
-          <a-button to="/signin">Log in</a-button>
+          <a-button to="/login">Log in</a-button>
         </template>
       </div>
     </div>

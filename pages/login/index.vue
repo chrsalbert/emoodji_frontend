@@ -39,9 +39,13 @@
           <a-button :loading="form.processing" submit full>Log in</a-button>
         </m-form>
         <br /><br />
-        <p>
+        <p style="margin-bottom:var(--space-2)">
           No account yet?
           <nuxt-link to="/signup">Sign up</nuxt-link>
+        </p>
+        <p>
+          Forgot your password?
+          <nuxt-link to="/login/reset-password">Reset password</nuxt-link>
         </p>
       </l-container>
     </template>
@@ -74,6 +78,12 @@ export default {
       this.$toast().show({
         text: this.$route.params.error,
         variant: 'negative'
+      })
+    }
+    if (this.$route.params.toast) {
+      this.$toast().show({
+        text: this.$route.params.toast.text,
+        variant: this.$route.params.toast.variant
       })
     }
   },

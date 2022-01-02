@@ -138,7 +138,7 @@ export default {
     onDocumentClick(e) {
       if (
         e.target !== this.$refs.dropdown &&
-        !this.$refs.dropdown.contains(e.target)
+        !this.$refs.dropdown?.contains(e.target)
       ) {
         this.close()
       }

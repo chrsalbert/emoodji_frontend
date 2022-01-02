@@ -15,7 +15,7 @@ export default {
           token
         })
         this.$router.push({
-          name: 'signin',
+          name: 'login',
           params: {
             success: 'Your account has been activated'
           }
@@ -31,7 +31,7 @@ export default {
             break
         }
         this.$router.push({
-          name: 'signin',
+          name: 'login',
           params: {
             error
           }

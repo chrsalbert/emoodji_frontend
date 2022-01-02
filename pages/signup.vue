@@ -88,7 +88,7 @@
             <br /><br />
             <p>
               Already have an account?
-              <nuxt-link to="/signin">Sign in</nuxt-link>
+              <nuxt-link to="/login">Sign in</nuxt-link>
             </p>
           </m-form>
         </transition>
