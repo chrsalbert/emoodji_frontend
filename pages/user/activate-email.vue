@@ -2,21 +2,26 @@
   <o-loading />
 </template>
 <script>
+import form from '~/mixins/form.js'
 export default {
+  mixins: [form],
   layout: 'blank',
   async fetch() {
-    await this.activateEmail(this.$route.params.token)
+    await this.activateEmail(this.$route.query.token)
   },
   fetchOnServer: false,
   methods: {
     async activateEmail(token) {
       try {
-        await this.$axios.post(
-          `${process.env.backendUrl}/api/user/profile/email/activate`,
+        const { data } = await this.$axios.get(
+          `${process.env.backendUrl}/api/user/activate-email`,
           {
-            token
+            headers: {
+              authorization: token
+            }
           }
         )
+        this.$nuxt.$updatedUser(data)
         this.$router.push({
           name: 'user-profile',
           params: {

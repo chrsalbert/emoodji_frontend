@@ -14,6 +14,7 @@ export default (context, inject) => {
     context.$auth.refreshTokens()
     const updatedUser = { ...context.$auth.user }
     updatedUser.forename = data.forename
+    updatedUser.email = data.email
     context.$auth.setUser(updatedUser)
   }
 

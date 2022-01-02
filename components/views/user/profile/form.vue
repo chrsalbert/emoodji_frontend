@@ -83,6 +83,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.auth.user
+    },
+    hasValueChanged() {
+      return this.form.value !== this.user[this.id]
     }
   },
   mounted() {
@@ -90,7 +93,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      if (this.form.value === this.user[this.id]) {
+      if (!this.hasValueChanged) {
         return this.toggleFormOpen()
       }
       try {

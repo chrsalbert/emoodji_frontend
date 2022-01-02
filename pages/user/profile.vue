@@ -30,7 +30,9 @@
   </l-container>
 </template>
 <script>
+import form from '~/mixins/form.js'
 export default {
+  mixins: [form],
   middleware: 'auth',
   data() {
     return {
@@ -45,14 +47,6 @@ export default {
   computed: {
     user() {
       return this.$store.state.auth.user
-    }
-  },
-  mounted() {
-    if (this.$route.params.toast) {
-      this.$toast().show({
-        text: this.$route.params.toast.text,
-        variant: this.$route.params.toast.variant
-      })
     }
   },
   beforeMount() {
